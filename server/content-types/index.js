@@ -1,3 +1,9 @@
-'use strict';
+"use strict";
 
-module.exports = {};
+const handler = require("./handler");
+const handlerparam = require("./handlerparam");
+
+module.exports = {
+  handler,
+  handlerparam,
+};

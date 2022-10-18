@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "handlers",
+  "info": {
+    "singularName": "handler",
+    "pluralName": "handlers",
+    "displayName": "Handler"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "path": {
+      "type": "string"
+    },
+    "method": {
+      "type": "enumeration",
+      "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    },
+    "script": {
+      "type": "text"
+    },
+    "params": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::bloon.handlerparam",
+      "mappedBy": "handler"
+    }
+  }
+}

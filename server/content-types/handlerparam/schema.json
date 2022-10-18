@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "handlerparams",
+  "info": {
+    "singularName": "handlerparam",
+    "pluralName": "handlerparams",
+    "displayName": "Handler Param"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "sort_index": {
+      "type": "integer"
+    },
+    "data_type": {
+      "type": "enumeration",
+      "enum": ["STRING", "NUMBER"]
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "handler": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::bloon.handler",
+      "inversedBy": "params"
+    }
+  }
+}
