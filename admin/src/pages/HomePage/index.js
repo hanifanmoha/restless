@@ -23,18 +23,42 @@ const initialHanlders = [
 
 const HomePage = () => {
   const [handlers, setHandlers] = useState(initialHanlders);
-  const [showModal, setShowModal] = useState(false);
+  const [handler, setHandler] = useState(null);
+  const [showModal, setShowModal] = useState(true);
 
-  async function addHanlder(data) {
-    setHandlers((current) => [...current, { ...data, id: nanoid() }]);
+  function onCloseModal() {
+    setHandler(null);
+    setShowModal(false);
   }
 
-  async function deleteHandler(id) {
-    setHandlers((current) => current.filter((handler) => handler.id != id));
+  function onCreateHandler() {
+    setHandler(null);
+    setShowModal(true);
   }
 
-  async function editHandler(id, data) {
-    alert("edit handler");
+  function onEditHandler(id) {
+    setHandler(handlers.find((h) => h.id === id));
+    setShowModal(true);
+  }
+
+  async function saveHandler(data) {
+    if (handler?.id) {
+      const editedHandler = { ...data, id: handler.id };
+      setHandlers((current) =>
+        current.map((c) => {
+          if (c.id === handler.id) return editedHandler;
+          return c;
+        })
+      );
+    } else {
+      setHandlers((current) => [...current, { ...data, id: nanoid() }]);
+    }
+    setShowModal(false);
+  }
+
+  async function deleteHandler() {
+    setHandlers((current) => current.filter((h) => h.id !== handler?.id));
+    setShowModal(false);
   }
 
   return (
@@ -52,7 +76,7 @@ const HomePage = () => {
             content="You don't have any handler yet..."
             action={
               <Button
-                onClick={() => setShowModal(true)}
+                onClick={() => onCreateHandler()}
                 variant="secondary"
                 startIcon={<Plus />}
               >
@@ -64,16 +88,21 @@ const HomePage = () => {
           <>
             <HandlerTable
               handlers={handlers}
-              setShowModal={setShowModal}
-              deleteHandler={deleteHandler}
-              editHandler={editHandler}
+              onCreateHandler={onCreateHandler}
+              onEditHandler={onEditHandler}
             />
           </>
         )}
       </ContentLayout>
 
       {showModal && (
-        <HandlerModal setShowModal={setShowModal} addHanlder={addHanlder} />
+        <HandlerModal
+          key={handler?.id ?? "create"}
+          handler={handler}
+          onCloseModal={onCloseModal}
+          saveHandler={saveHandler}
+          deleteHandler={deleteHandler}
+        />
       )}
     </>
   );

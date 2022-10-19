@@ -17,9 +17,8 @@ import { Pencil, Trash, Plus } from "@strapi/icons";
 
 export default function TodoTable({
   handlers,
-  deleteHandler,
-  editHandler,
-  setShowModal,
+  onEditHandler,
+  onCreateHandler,
 }) {
   return (
     <Box
@@ -33,7 +32,7 @@ export default function TodoTable({
         colCount={4}
         rowCount={10}
         footer={
-          <TFooter onClick={() => setShowModal(true)} icon={<Plus />}>
+          <TFooter onClick={() => onCreateHandler()} icon={<Plus />}>
             Add new handler
           </TFooter>
         }
@@ -71,20 +70,11 @@ export default function TodoTable({
                 <Td>
                   <Flex style={{ justifyContent: "end" }}>
                     <IconButton
-                      onClick={() => alert("edit")}
+                      onClick={() => onEditHandler(handler.id)}
                       label="Edit"
                       noBorder
                       icon={<Pencil />}
                     />
-
-                    <Box paddingLeft={1}>
-                      <IconButton
-                        onClick={() => deleteHandler(handler.id)}
-                        label="Delete"
-                        noBorder
-                        icon={<Trash />}
-                      />
-                    </Box>
                   </Flex>
                 </Td>
               </Tr>

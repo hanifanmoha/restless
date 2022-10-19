@@ -16,10 +16,15 @@ import {
 } from "@strapi/design-system";
 import { METHODS } from "../../../../common/constants";
 
-export default function HandlerModal({ setShowModal, addHanlder }) {
-  const [method, setMethod] = useState(METHODS.GET);
-  const [path, setPath] = useState("");
-  const [script, setScript] = useState("");
+export default function HandlerModal({
+  handler,
+  onCloseModal,
+  saveHandler,
+  deleteHandler,
+}) {
+  const [method, setMethod] = useState(handler?.method ?? METHODS.GET);
+  const [path, setPath] = useState(handler?.path ?? "");
+  const [script, setScript] = useState(handler?.script ?? "");
   const [error, setError] = useState("");
 
   function validate() {
@@ -36,15 +41,13 @@ export default function HandlerModal({ setShowModal, addHanlder }) {
   }
 
   async function handleSubmit(e) {
-    // Prevent submitting parent form
     e.preventDefault();
     e.stopPropagation();
 
     if (!validate()) return;
 
     try {
-      await addHanlder({ method, path, script });
-      setShowModal(false);
+      await saveHandler({ method, path, script });
     } catch (e) {
       console.log("error", e);
       setError(e.toString());
@@ -53,7 +56,7 @@ export default function HandlerModal({ setShowModal, addHanlder }) {
 
   return (
     <ModalLayout
-      onClose={() => setShowModal(false)}
+      onClose={() => onCloseModal()}
       labelledBy="title"
       as="form"
       onSubmit={handleSubmit}
@@ -67,7 +70,12 @@ export default function HandlerModal({ setShowModal, addHanlder }) {
       <ModalBody>
         {error !== "" && (
           <Box marginBottom={5}>
-            <Alert title="Error" variant="danger">
+            <Alert
+              title="Error"
+              variant="danger"
+              onClose={() => setError("")}
+              closeLabel="Close"
+            >
               {error}
             </Alert>
           </Box>
@@ -103,9 +111,11 @@ export default function HandlerModal({ setShowModal, addHanlder }) {
 
       <ModalFooter
         startActions={
-          <Button onClick={() => setShowModal(false)} variant="tertiary">
-            Cancel
-          </Button>
+          handler?.id && (
+            <Button variant="danger" onClick={deleteHandler}>
+              Delete handler
+            </Button>
+          )
         }
         endActions={<Button type="submit">Add handler</Button>}
       />
