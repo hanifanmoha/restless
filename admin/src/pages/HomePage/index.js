@@ -24,21 +24,21 @@ const initialHanlders = [
 const HomePage = () => {
   const [handlers, setHandlers] = useState(initialHanlders);
   const [handler, setHandler] = useState(null);
-  const [showModal, setShowModal] = useState(true);
+  const [showFormModal, setShowFormModal] = useState(true);
 
   function onCloseModal() {
     setHandler(null);
-    setShowModal(false);
+    setShowFormModal(false);
   }
 
   function onCreateHandler() {
     setHandler(null);
-    setShowModal(true);
+    setShowFormModal(true);
   }
 
   function onEditHandler(id) {
     setHandler(handlers.find((h) => h.id === id));
-    setShowModal(true);
+    setShowFormModal(true);
   }
 
   async function saveHandler(data) {
@@ -53,12 +53,12 @@ const HomePage = () => {
     } else {
       setHandlers((current) => [...current, { ...data, id: nanoid() }]);
     }
-    setShowModal(false);
+    setShowFormModal(false);
   }
 
   async function deleteHandler() {
     setHandlers((current) => current.filter((h) => h.id !== handler?.id));
-    setShowModal(false);
+    setShowFormModal(false);
   }
 
   return (
@@ -95,7 +95,7 @@ const HomePage = () => {
         )}
       </ContentLayout>
 
-      {showModal && (
+      {showFormModal && (
         <HandlerModal
           key={handler?.id ?? "create"}
           handler={handler}
