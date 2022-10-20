@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import {
   BaseHeaderLayout,
@@ -6,25 +6,31 @@ import {
   EmptyStateLayout,
   Button,
 } from "@strapi/design-system";
+import { LoadingIndicatorPage } from "@strapi/helper-plugin";
 import { Illo } from "../../components/Illo";
 import { Plus } from "@strapi/icons";
 
 import HandlerModal from "../../components/HandlerModal";
 import HandlerTable from "../../components/HandlerTable";
 
-const initialHanlders = [
-  {
-    id: nanoid(),
-    method: "GET",
-    path: "posts",
-    script: "SELECT * FROM POSTS",
-  },
-];
+import handlerRequests from "../../api/handler";
 
 const HomePage = () => {
-  const [handlers, setHandlers] = useState(initialHanlders);
+  const [handlers, setHandlers] = useState([]);
   const [handler, setHandler] = useState(null);
-  const [showFormModal, setShowFormModal] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
+
+  async function fetchData() {
+    if (isLoading == false) setIsLoading(true);
+    const data = await handlerRequests.getAllHandlers();
+    setHandlers(data);
+    setIsLoading(false);
+  }
+
+  useEffect(async () => {
+    await fetchData();
+  }, []);
 
   function onCloseModal() {
     setHandler(null);
@@ -42,32 +48,30 @@ const HomePage = () => {
   }
 
   async function saveHandler(data) {
+    setIsLoading(true);
     if (handler?.id) {
-      const editedHandler = { ...data, id: handler.id };
-      setHandlers((current) =>
-        current.map((c) => {
-          if (c.id === handler.id) return editedHandler;
-          return c;
-        })
-      );
+      await handlerRequests.editHandler(handler.id, data);
     } else {
-      setHandlers((current) => [...current, { ...data, id: nanoid() }]);
+      await handlerRequests.addHandler(data);
     }
+    await fetchData();
+    setIsLoading(false);
     setShowFormModal(false);
   }
 
   async function deleteHandler() {
-    setHandlers((current) => current.filter((h) => h.id !== handler?.id));
+    setIsLoading(true);
+    await handlerRequests.deleteHandler(handler?.id);
+    await fetchData();
+    setIsLoading(false);
     setShowFormModal(false);
   }
 
+  if (isLoading) return <LoadingIndicatorPage />;
+
   return (
     <>
-      <BaseHeaderLayout
-        title="Bloon"
-        subtitle="No body said it was ez"
-        as="h2"
-      />
+      <BaseHeaderLayout title="Bloon" subtitle="" as="h2" />
 
       <ContentLayout>
         {handlers.length === 0 ? (

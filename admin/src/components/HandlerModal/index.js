@@ -113,11 +113,11 @@ export default function HandlerModal({
         startActions={
           handler?.id && (
             <Button variant="danger" onClick={deleteHandler}>
-              Delete handler
+              Delete
             </Button>
           )
         }
-        endActions={<Button type="submit">Add handler</Button>}
+        endActions={<Button type="submit">Submit</Button>}
       />
     </ModalLayout>
   );
