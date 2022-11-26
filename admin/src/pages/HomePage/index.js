@@ -71,7 +71,7 @@ const HomePage = () => {
 
   return (
     <>
-      <BaseHeaderLayout title="Bloon" subtitle="" as="h2" />
+      <BaseHeaderLayout title="Restless" subtitle="" as="h2" />
 
       <ContentLayout>
         {handlers.length === 0 ? (

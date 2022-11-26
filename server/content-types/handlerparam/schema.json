@@ -35,7 +35,7 @@
     "handler": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "plugin::bloon.handler",
+      "target": "plugin::restless.handler",
       "inversedBy": "params"
     }
   }

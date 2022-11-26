@@ -3,7 +3,7 @@
 module.exports = ({ strapi }) => ({
   async execute(method, params, query, body) {
     const handlers = await strapi.entityService.findMany(
-      "plugin::bloon.handler",
+      "plugin::restless.handler",
       {
         filters: {
           path: params.path,

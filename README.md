@@ -1,4 +1,4 @@
-# Strapi plugin bloon
+# Strapi plugin restless
 
-A quick description of bloon.
-# bloon
+A quick description of restless.
+# restless

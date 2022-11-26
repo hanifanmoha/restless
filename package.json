@@ -1,12 +1,12 @@
 {
-  "name": "bloon",
+  "name": "restless",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "bloon",
-    "description": "Description of Bloon plugin",
+    "name": "Restless",
+    "description": "Rest API Managers",
     "kind": "plugin",
-    "displayName": "Bloon"
+    "displayName": "Restless"
   },
   "dependencies": {},
   "author": {

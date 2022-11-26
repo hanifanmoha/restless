@@ -3,7 +3,7 @@
 module.exports = ({ strapi }) => ({
   async getHandlers(ctx) {
     try {
-      ctx.body = await strapi.plugin("bloon").service("handler").get();
+      ctx.body = await strapi.plugin("restless").service("handler").get();
     } catch (err) {
       ctx.throw(500, err);
     }
@@ -11,7 +11,7 @@ module.exports = ({ strapi }) => ({
   async createHandlers(ctx) {
     try {
       ctx.body = await strapi
-        .plugin("bloon")
+        .plugin("restless")
         .service("handler")
         .create(ctx.request.body);
     } catch (err) {
@@ -21,7 +21,7 @@ module.exports = ({ strapi }) => ({
   async updateHandlers(ctx) {
     try {
       ctx.body = await strapi
-        .plugin("bloon")
+        .plugin("restless")
         .service("handler")
         .update(ctx.params.id, ctx.request.body);
     } catch (err) {
@@ -31,7 +31,7 @@ module.exports = ({ strapi }) => ({
   async deleteHandlers(ctx) {
     try {
       ctx.body = await strapi
-        .plugin("bloon")
+        .plugin("restless")
         .service("handler")
         .delete(ctx.params.id);
     } catch (err) {
