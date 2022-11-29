@@ -35,7 +35,7 @@
     "handler": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "plugin::restless.handler",
+      "target": "plugin::restrapi.handler",
       "inversedBy": "params"
     }
   }

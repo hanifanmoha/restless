@@ -1,4 +1,5 @@
-# Strapi plugin restless
+# Strapi plugin restrapi
 
-A quick description of restless.
-# restless
+A quick description of restrapi.
+
+# restrapi

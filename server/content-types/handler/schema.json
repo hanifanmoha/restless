@@ -32,7 +32,7 @@
     "params": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "plugin::restless.handlerparam",
+      "target": "plugin::restrapi.handlerparam",
       "mappedBy": "handler"
     }
   }

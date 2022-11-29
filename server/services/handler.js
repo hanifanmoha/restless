@@ -3,7 +3,7 @@
 module.exports = ({ strapi }) => ({
   async get() {
     const handlers = await strapi.entityService.findMany(
-      "plugin::restless.handler",
+      "plugin::restrapi.handler",
       {
         populate: {
           params: true,
@@ -14,7 +14,7 @@ module.exports = ({ strapi }) => ({
   },
   async getById(id) {
     const handler = await strapi.entityService.findOne(
-      "plugin::restless.handler",
+      "plugin::restrapi.handler",
       id,
       {
         populate: {
@@ -28,12 +28,12 @@ module.exports = ({ strapi }) => ({
     const { params, ...handler } = data;
     const resParams = await Promise.all(
       params.map(({ id, ...param }) => {
-        return strapi.entityService.create("plugin::restless.handlerparam", {
+        return strapi.entityService.create("plugin::restrapi.handlerparam", {
           data: param,
         });
       })
     );
-    const res = await strapi.entityService.create("plugin::restless.handler", {
+    const res = await strapi.entityService.create("plugin::restrapi.handler", {
       data: { ...handler, params: resParams },
       populate: {
         params: true,
@@ -58,14 +58,14 @@ module.exports = ({ strapi }) => ({
       params.map(({ id: paramId, ...param }) => {
         if (paramId > 0) {
           return strapi.entityService.update(
-            "plugin::restless.handlerparam",
+            "plugin::restrapi.handlerparam",
             paramId,
             {
               data: param,
             }
           );
         } else {
-          return strapi.entityService.create("plugin::restless.handlerparam", {
+          return strapi.entityService.create("plugin::restrapi.handlerparam", {
             data: param,
           });
         }
@@ -75,14 +75,14 @@ module.exports = ({ strapi }) => ({
     await Promise.all(
       deletedIds.map((deletedId) => {
         return strapi.entityService.delete(
-          "plugin::restless.handlerparam",
+          "plugin::restrapi.handlerparam",
           deletedId
         );
       })
     );
 
     const res = await strapi.entityService.update(
-      "plugin::restless.handler",
+      "plugin::restrapi.handler",
       id,
       {
         data: { ...handler, params: resParams },
@@ -101,11 +101,11 @@ module.exports = ({ strapi }) => ({
     await Promise.all(
       existingIds.map((existingId) => {
         return strapi.entityService.delete(
-          "plugin::restless.handlerparam",
+          "plugin::restrapi.handlerparam",
           existingId
         );
       })
     );
-    return await strapi.entityService.delete("plugin::restless.handler", id);
+    return await strapi.entityService.delete("plugin::restrapi.handler", id);
   },
 });

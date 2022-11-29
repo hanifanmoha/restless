@@ -9,7 +9,7 @@ function replaceAll(string, search, replace = "") {
 module.exports = ({ strapi }) => ({
   async execute(method, params, query, body) {
     const handlers = await strapi.entityService.findMany(
-      "plugin::restless.handler",
+      "plugin::restrapi.handler",
       {
         filters: {
           path: params.path,
