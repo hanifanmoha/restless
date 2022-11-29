@@ -1,9 +1,9 @@
 {
-  "name": "poc-restless",
+  "name": "restless",
   "version": "0.0.1",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "poc-restless",
+    "name": "restless",
     "description": "Rest API Managers",
     "kind": "plugin",
     "displayName": "Restless"
