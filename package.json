@@ -1,14 +1,17 @@
 {
   "name": "poc-restless",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "Restless",
+    "name": "poc-restless",
     "description": "Rest API Managers",
     "kind": "plugin",
     "displayName": "Restless"
   },
   "dependencies": {},
+  "peerDependencies": {
+    "@strapi/strapi": "^4.0.0"
+  },
   "author": {
     "name": "A Strapi developer"
   },
@@ -20,6 +23,10 @@
   "engines": {
     "node": ">=14.19.1 <=18.x.x",
     "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hanifanmoha/restless"
   },
   "license": "MIT"
 }
