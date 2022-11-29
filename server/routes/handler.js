@@ -4,6 +4,7 @@ module.exports = [
     path: "/handlers",
     handler: "handler.getHandlers",
     config: {
+      auth: false,
       policies: [],
     },
   },
@@ -12,6 +13,7 @@ module.exports = [
     path: "/handlers",
     handler: "handler.createHandlers",
     config: {
+      auth: false,
       policies: [],
     },
   },
@@ -20,6 +22,7 @@ module.exports = [
     path: "/handlers/:id",
     handler: "handler.updateHandlers",
     config: {
+      auth: false,
       policies: [],
     },
   },
@@ -28,6 +31,7 @@ module.exports = [
     path: "/handlers/:id",
     handler: "handler.deleteHandlers",
     config: {
+      auth: false,
       policies: [],
     },
   },

@@ -34,7 +34,7 @@ export default function HandlerModal({
   const [method, setMethod] = useState(handler?.method ?? METHODS.GET);
   const [path, setPath] = useState(handler?.path ?? "");
   const [script, setScript] = useState(handler?.script ?? "");
-  const [params, setParams] = useState([]);
+  const [params, setParams] = useState(handler?.params ?? []);
   const [error, setError] = useState("");
 
   function validate() {

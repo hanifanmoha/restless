@@ -3,80 +3,109 @@
 module.exports = ({ strapi }) => ({
   async get() {
     const handlers = await strapi.entityService.findMany(
-      "plugin::restless.handler"
+      "plugin::restless.handler",
+      {
+        populate: {
+          params: true,
+        },
+      }
     );
-    // const handlerParams = await strapi.entityService.findMany(
-    //   "plugin::restless.handlerparam"
-    // );
-    // console.log(handlerParams);
-    // for (const handler of handlers) {
-    //   handler.params = handlerParams.filter(
-    //     (param) => param.handler === handler.id
-    //   );
-    // }
     return handlers;
+  },
+  async getById(id) {
+    const handler = await strapi.entityService.findOne(
+      "plugin::restless.handler",
+      id,
+      {
+        populate: {
+          params: true,
+        },
+      }
+    );
+    return handler;
   },
   async create(data) {
     const { params, ...handler } = data;
+    const resParams = await Promise.all(
+      params.map(({ id, ...param }) => {
+        return strapi.entityService.create("plugin::restless.handlerparam", {
+          data: param,
+        });
+      })
+    );
     const res = await strapi.entityService.create("plugin::restless.handler", {
-      data: handler,
+      data: { ...handler, params: resParams },
+      populate: {
+        params: true,
+      },
     });
-    res.params = [];
-    // for (const param of params) {
-    //   const { id, ...paramData } = param;
-    //   const resParam = await strapi.entityService.create(
-    //     "plugin::restless.handlerparam",
-    //     {
-    //       data: { ...paramData, handler: res.id },
-    //     }
-    //   );
-    //   res.params.push(resParam);
-    // }
     return res;
   },
   async update(id, data) {
     const { params, ...handler } = data;
+
+    const existingHandler = await this.getById(id);
+
+    const existingIds = (existingHandler?.params || []).map(
+      (param) => param.id
+    );
+    const newIds = (params || []).map((param) => param.id);
+    const deletedIds = existingIds.filter(
+      (existingId) => !newIds.find((newId) => newId === existingId)
+    );
+
+    const resParams = await Promise.all(
+      params.map(({ id: paramId, ...param }) => {
+        if (paramId > 0) {
+          return strapi.entityService.update(
+            "plugin::restless.handlerparam",
+            paramId,
+            {
+              data: param,
+            }
+          );
+        } else {
+          return strapi.entityService.create("plugin::restless.handlerparam", {
+            data: param,
+          });
+        }
+      })
+    );
+
+    await Promise.all(
+      deletedIds.map((deletedId) => {
+        return strapi.entityService.delete(
+          "plugin::restless.handlerparam",
+          deletedId
+        );
+      })
+    );
+
     const res = await strapi.entityService.update(
       "plugin::restless.handler",
       id,
       {
-        data: handler,
+        data: { ...handler, params: resParams },
+        populate: {
+          params: true,
+        },
       }
     );
-    res.params = [];
-    // const existingParams = await strapi.entityService.findMany(
-    //   "plugin::restless.handlerparam",
-    //   {
-    //     filters: {
-    //       handler: id,
-    //     },
-    //   }
-    // );
-    // console.log(existingParams);
-    // for (const param of params) {
-    //   const { id: paramId, ...paramData } = param;
-    //   if (id >= 0) {
-    //     const resParam = await strapi.entityService.create(
-    //       "plugin::restless.handlerparam",
-    //       {
-    //         data: { ...paramData, handler: res.id },
-    //       }
-    //     );
-    //     res.params.push(resParam);
-    //   } else {
-    //     const resParam = await strapi.entityService.update(
-    //       "plugin::restless.handlerparam",
-    //       paramId,
-    //       {
-    //         data: { ...paramData, handler: res.id },
-    //       }
-    //     );
-    //     res.params.push(resParam);
-    //   }
-    // }
     return res;
   },
   async delete(id) {
+    const existingHandler = await this.getById(id);
+    const existingIds = (existingHandler?.params || []).map(
+      (param) => param.id
+    );
+    await Promise.all(
+      existingIds.map((existingId) => {
+        return strapi.entityService.delete(
+          "plugin::restless.handlerparam",
+          existingId
+        );
+      })
+    );
     return await strapi.entityService.delete("plugin::restless.handler", id);
   },
 });
