@@ -23,7 +23,7 @@ import {
   AccordionContent,
 } from "@strapi/design-system";
 import { Trash, Plus } from "@strapi/icons";
-import { METHODS, PARAM_TYPES } from "../../../../common/constants";
+import { METHODS, PARAM_TYPES } from "../../utils/constants";
 
 export default function HandlerModal({
   handler,
