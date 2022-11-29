@@ -35,9 +35,6 @@ module.exports = ({ strapi }) => ({
         throw `${param.name} is required`;
       }
 
-      if (param.data_type === PARAM_TYPES.STRING) {
-        value = `'${value}'`;
-      }
       script = replaceAll(script, `::${param.name}::`, value);
     }
 
